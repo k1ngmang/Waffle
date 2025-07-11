@@ -1,5 +1,6 @@
 #[derive(Debug, Clone)]
-pub(crate) enum Token<'input> {
+#[derive(PartialEq)]
+pub(crate) enum Token {
     Fun,
     Module,
     Use,
@@ -12,15 +13,20 @@ pub(crate) enum Token<'input> {
     Semicolon,
     LeftBrace,
     RightBrace,
-    DoubleQuote,
     Assign,
+    CompoundPlus,
+    CompoundMinus,
+    CompoundStar,
+    CompoundSlash,
+    CompoundMod,
     Let,
     LeftSquareBracket,
-    RightSquateBracket,
+    RightSquareBracket,
     Star,
     Slash,
     Plus,
     Minus,
+    Mod,
     Match,
     And,
     Or,
@@ -39,18 +45,11 @@ pub(crate) enum Token<'input> {
     Not,
     Integer(i64),
     Float(f64),
-    Identifier(&'input str),
-    String(&'input str),
+    Identifier(String),
+    String(String),
     Boolean(bool),
-    Undefined
-}   
-
-#[derive(Debug, Clone)]
-pub(crate) struct SpannedToken<'input> {
-    pub(crate) token: Token<'input>,
-    pub(crate) span: Span,
+    For,
 }
-
 #[derive(Debug, Clone, Copy)]
 pub(crate) struct Span {
     pub(crate) start: usize,
@@ -63,12 +62,18 @@ impl Span {
     }
 }
 
-impl<'input> SpannedToken<'input> {
-    pub(crate) fn new(token: Token<'input>, span: Span) -> SpannedToken<'input> {
+#[derive(Debug, Clone)]
+pub(crate) struct SpannedToken {
+    pub(crate) token: Token,
+    pub(crate) span: Span,
+}
+
+impl SpannedToken {
+    pub(crate) fn new(token: Token, span: Span) -> SpannedToken {
         SpannedToken { token, span }
     }
 
-    pub(crate) fn new_single_char(token: Token<'input>, span_start: usize) -> SpannedToken<'input> {
+    pub(crate) fn new_single_char(token: Token, span_start: usize) -> SpannedToken {
         SpannedToken {
             token,
             span: Span::new(span_start, span_start + 1),
