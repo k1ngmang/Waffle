@@ -142,10 +142,10 @@ impl<'cursor> Lexer<'cursor> {
                     let string = self.tokenize_string()?;
                     self.add_tk(string)
                 }
-                ' ' => self.column += 1,
-                '\t' => self.column += 1,
+                ' ' => {},
+                '\t' => {},
                 '\n' => self.line += 1,
-                '\0' => self.column += 1,
+                '\0' => {}
                 ch => {
                     if ch.is_digit(10) {
                         let number;
