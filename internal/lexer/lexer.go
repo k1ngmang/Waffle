@@ -341,7 +341,7 @@ func (l *Lexer) tokenizeId(first rune) (SpannedToken, error) {
 		if !ok {
 			return SpannedToken{}, UnexpectedEOF()
 		}
-		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || r == '_' {
+		if unicode.IsLetter(r) || r == '_' {
 			rr, _ := l.advance()
 			id = append(id, rr)
 		} else {
