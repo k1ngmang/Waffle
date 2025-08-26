@@ -232,7 +232,7 @@ func (l *Lexer) tokenizeHexNumber() (SpannedToken, error) {
 		if err != nil {
 			return SpannedToken{}, err
 		}
-		if (r >= '0' && r <= '9') || (r >= 'a' && r <= 'f') || (r >= 'A' && r <= 'F') {
+		if (unicode.IsDigit(r)) || (r >= 'a' && r <= 'f') || (r >= 'A' && r <= 'F') {
 			rr, _ := l.advance()
 			digits = append(digits, rr)
 		} else {
@@ -305,7 +305,7 @@ func (l *Lexer) tokenizeNumber(first rune) (SpannedToken, error) {
 	isDecimal := false
 	for !l.cursor.IsAtEnd() {
 		r, _ := l.advance()
-		if (r >= '0' && r <= '9') || r == '.' {
+		if (unicode.IsDigit(r)) || r == '.' {
 			if r == '.' {
 				if isDecimal {
 					return SpannedToken{}, LexError{Kind: ErrFailedToParseNumber, Message: "multiple dots"}
