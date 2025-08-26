@@ -2,6 +2,7 @@ package lexer
 
 import (
 	"strconv"
+	"unicode"
 )
 
 type Lexer struct {
@@ -160,7 +161,7 @@ func (l *Lexer) Tokenize() ([]SpannedToken, error) {
 					return nil, err
 				}
 				l.addSpannedTk(st)
-			} else if (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch == '_' {
+			} else if unicode.IsLetter(ch) || ch == '_' {
 				st, err := l.tokenizeId(ch)
 				if err != nil {
 					return nil, err
